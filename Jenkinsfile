@@ -47,5 +47,13 @@ pipeline {
                }
             }
         }
+        stage('Maven Build : maven'){
+            steps{
+               script{
+                   
+                   mvnBuild()
+               }
+            }
+        }
     }
 }
