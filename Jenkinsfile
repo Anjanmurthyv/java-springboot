@@ -79,9 +79,8 @@ pipeline {
             }
           }
        }
-       stages {
-        stage('Pushing to ECR') {
-            steps {
+      stage('Pushing to ECR') {
+          steps {
                 dockerImagePush()
             }
         }
