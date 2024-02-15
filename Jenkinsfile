@@ -3,14 +3,10 @@
 pipeline {
     agent any
 
-    parameters{
-
-        string(name: 'ImageName', description: "name of the docker build", defaultValue: 'javapp')
-        string(name: 'ImageTag', description: "tag of the docker build", defaultValue: 'v1')        
-        string(name: 'aws_account_id', description: " AWS Account ID", defaultValue: '670855725719')
-        string(name: 'Region', description: "Region of ECR", defaultValue: 'ap-south-1')
-        string(name: 'ECR_REPO_NAME', description: "name of the ECR", defaultValue: 'testecr')
-        
+    environment {
+        registry = "670855725719.dkr.ecr.ap-south-1.amazonaws.com/testecr"
+        imagename = sprintboot
+        tagname = V1
     }
     
     stages {
@@ -65,13 +61,12 @@ pipeline {
                }
             }
         }
-        stage('Docker Image Build : ECR'){
-             steps{
-                script{
-                   
-                    dockerBuild("${params.aws_account_id}","${params.Region}","${params.ECR_REPO_NAME}","${params.ImageName}","${params.ImageTag}")
+        stage('Building image') {
+            steps{
+                script {
+                    dockerImage = docker.build registry imagename tagname
                 }
-             }
-         }
+            }
+        }
     }
 }
