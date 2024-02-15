@@ -79,5 +79,15 @@ pipeline {
             }
           }
        }
+        stage('Push Image to ECR') {
+            steps {
+                script {
+                    dockerOperations(
+                        registry: registry,
+                        imagename: imagename,
+                        tagname: tagname
+                    )
+                }
+            }
     }
 }
