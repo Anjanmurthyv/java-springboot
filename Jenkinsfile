@@ -84,8 +84,7 @@ pipeline {
             }
         stage('Docker Image Cleanup'){
             steps{
-               script{
-                   dockerImageCleanup()
+                dockerImageCleanup()
                }
             }
         }    
