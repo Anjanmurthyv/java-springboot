@@ -5,8 +5,8 @@ pipeline {
 
     environment {
         registry = "670855725719.dkr.ecr.ap-south-1.amazonaws.com/testecr"
-        imagename = sprintboot
-        tagname = V1
+        imagename = "sprintboot"
+        tagname = "V1"
     }
     
     stages {
