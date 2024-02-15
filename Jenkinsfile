@@ -79,5 +79,9 @@ pipeline {
             }
           }
        }
+      stage('Docker Image Push : ECR '){
+          steps{
+              script{
+                  dockerImagePush("${registry}/${imagename}:${tagname}")
     }
 }
