@@ -71,7 +71,7 @@ pipeline {
            steps {
               script {
             // Define the Docker image to be scanned
-                  def imageName = "${registry}/${imagename}}"
+                  def imageName = "${registry}/${imagename}"
             
             // Execute Trivy scan on the Docker image
                   sh "trivy image ${imageName}"
