@@ -81,7 +81,7 @@ pipeline {
            steps {
                script {
                 def imageName = "${registry}"
-                sh "dockerImagePush(imageName)"
+                sh dockerImagePush(imageName)
                }
             }
         }
