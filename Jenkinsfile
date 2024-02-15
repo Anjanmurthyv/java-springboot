@@ -67,6 +67,13 @@ pipeline {
                    dockerImage = docker.build("${registry}/${imagename}:${tagname}")
              }
           }
-     }
+       }
+       stage('Docker Image Scan: trivy '){
+           steps{
+               script{    
+                   dockerImageScan("${registry}/${imagename}:${tagname}")
+               }
+            }
+        }
     }
 }
