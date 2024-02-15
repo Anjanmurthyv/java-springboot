@@ -9,7 +9,7 @@ pipeline {
                 script {
                     gitCheckout(
                         branch: "main",
-                        url: "https://github.com/Anjanmurthyv/java-app.git"
+                        url: "https://github.com/Anjanmurthyv/java-springboot.git"
                     )
                 }
             }
