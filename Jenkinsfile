@@ -82,11 +82,10 @@ pipeline {
                dockerImagePush()
                }
             }
-        stage('Docker Image Cleanup'){
-            steps{
+        stage('Docker Image Cleanup') {
+            steps {
                 dockerImageCleanup()
                }
-            }
-        }    
+            }   
     }
 }
