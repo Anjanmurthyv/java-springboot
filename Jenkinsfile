@@ -5,7 +5,7 @@ pipeline {
 
     environment {
         registry = "670855725719.dkr.ecr.ap-south-1.amazonaws.com/testecr"
-        imagename = "sprintboot"
+        imagename = "springboot"
         tagname = "V1"
     }
     
@@ -20,73 +20,64 @@ pipeline {
                 }
             }
         }
-        stage('Unit Test maven') {
+        stage('Unit Test Maven') {
             steps {
                 script {
                     mvnTest()
                 }
             }
         }
-        stage('Integration Test maven') {
-            
+        stage('Integration Test Maven') {
             steps {
                 script {
                     mvnIntegrationTest()
                 }
             }
         }
-        stage('Static code analysis: Sonarqube'){
-            steps{
-               script{
-                   
-                   def SonarQubecredentialsId = 'sonar-token'
-                   statiCodeAnalysis(SonarQubecredentialsId)
-               }
-            }
-        }
-        stage('Quality Gate Status Check : Sonarqube'){
-            steps{
-               script{
-                   
-                   def SonarQubecredentialsId = 'sonar-token'
-                   QualityGateStatus(SonarQubecredentialsId)
-               }
-            }
-        }
-        stage('Maven Build : maven'){
-            steps{
-               script{
-                   
-                   mvnBuild()
-               }
-            }
-        }
-        stage('Building image') {
+        stage('Static Code Analysis: SonarQube') {
             steps {
-               script {
-                   dockerImage = docker.build("${registry}/${imagename}:${tagname}")
-             }
-          }
-       }
-       stage('Docker Image Scan: trivy') {
-           steps {
-              script {
-            // Define the Docker image to be scanned
-                  def imageName = "${registry}/${imagename}:${tagname}"
-            
-            // Execute Trivy scan on the Docker image
-                  sh "trivy image ${imageName}"
+                script {
+                    def sonarQubeCredentialsId = 'sonar-token'
+                    staticCodeAnalysis(sonarQubeCredentialsId)
+                }
             }
-          }
-       }
-       stage('Docker Image Cleanup : ECR '){
-           steps{
-              script{
-                   
-           dockerImageCleanup("${registry}/${imagename}:${tagname}")
-                  }
-               }
-           } 
-      }
+        }
+        stage('Quality Gate Status Check: SonarQube') {
+            steps {
+                script {
+                    def sonarQubeCredentialsId = 'sonar-token'
+                    qualityGateStatus(sonarQubeCredentialsId)
+                }
+            }
+        }
+        stage('Maven Build') {
+            steps {
+                script {
+                    mvnBuild()
+                }
+            }
+        }
+        stage('Building Docker Image') {
+            steps {
+                script {
+                    dockerImage = docker.build("${registry}/${imagename}:${tagname}")
+                }
+            }
+        }
+        stage('Docker Image Scan: Trivy') {
+            steps {
+                script {
+                    def imageName = "${registry}/${imagename}:${tagname}"
+                    sh "trivy image ${imageName}"
+                }
+            }
+        }
+        stage('Docker Image Cleanup: ECR') {
+            steps {
+                script {
+                    dockerImageCleanup("${registry}/${imagename}:${tagname}")
+                }
+            }
+        }
     }
 }
