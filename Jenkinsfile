@@ -84,7 +84,7 @@ pipeline {
              steps{
                  script{
                    
-                   dockerImagePush("${registry}")
+                   dockerImagePush("${registry}/${imagename}:${tagname}")
                   }
                }
            }  
