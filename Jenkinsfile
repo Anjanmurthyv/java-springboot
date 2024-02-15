@@ -80,11 +80,13 @@ pipeline {
           }
        }
       stage('Docker Image Push : ECR '){
-          steps{
-              script{
-                  dockerImagePush("${registry}/${imagename}:${tagname}")
-              }
-          }
-      }
+    
+             steps{
+                 script{
+                   
+                   dockerImagePush("${registry}")
+                  }
+               }
+           }  
     }
 }
