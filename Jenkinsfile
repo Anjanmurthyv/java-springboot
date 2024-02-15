@@ -79,8 +79,9 @@ pipeline {
        }
        stage('Pushing to ECR') {
            steps {
+               script {
                 def imageName = "${registry}"
-                dockerImagePush(imageName)
+                sh "dockerImagePush(imageName)"
             }
         }
     }
