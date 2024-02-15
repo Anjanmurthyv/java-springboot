@@ -5,7 +5,6 @@ pipeline {
 
     environment {
         registry = "670855725719.dkr.ecr.ap-south-1.amazonaws.com/testecr"
-        imagename = "sprintboot"
     }
     
     stages {
@@ -63,7 +62,7 @@ pipeline {
         stage('Building image') {
             steps {
                script {
-                   dockerImage = docker.build("${registry}/${imagename}")
+                   dockerImage = docker.build("${registry}")
              }
           }
        }
@@ -71,7 +70,7 @@ pipeline {
            steps {
               script {
             // Define the Docker image to be scanned
-                  def imageName = "${registry}/${imagename}"
+                  def imageName = "${registry}"
             
             // Execute Trivy scan on the Docker image
                   sh "trivy image ${imageName}"
