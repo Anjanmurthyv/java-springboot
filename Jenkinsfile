@@ -85,8 +85,7 @@ pipeline {
                    
                       dockerImagePush("${registry}/${imagename}:${tagname}")
                   }
-               }
-           }  
+               }  
         }
     }
 }
