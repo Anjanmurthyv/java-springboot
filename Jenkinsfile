@@ -79,7 +79,7 @@ pipeline {
        }
        stage('Pushing to ECR') {
            steps {
-                dockerImagePush()
+                dockerImagePush(${registry)
             }
         }
     }
