@@ -75,7 +75,7 @@ pipeline {
                   def imageName = "${registry}/${imagename}:${tagname}"
             
             // Execute Trivy scan on the Docker image
-                  sh "trivy ${imageName}"
+                  sh "trivy image ${imageName}"
             }
           }
        }
