@@ -5,7 +5,7 @@ pipeline {
 
     environment {
         registry = "670855725719.dkr.ecr.ap-south-1.amazonaws.com/testecr"
-        imagename = "springboot"
+        imagename = "sprintboot"
         tagname = "V1"
     }
     
@@ -20,64 +20,64 @@ pipeline {
                 }
             }
         }
-        stage('Unit Test Maven') {
+        stage('Unit Test maven') {
             steps {
                 script {
                     mvnTest()
                 }
             }
         }
-        stage('Integration Test Maven') {
+        stage('Integration Test maven') {
+            
             steps {
                 script {
                     mvnIntegrationTest()
                 }
             }
         }
-        stage('Static Code Analysis: SonarQube') {
-            steps {
-                script {
-                    def sonarQubeCredentialsId = 'sonar-token'
-                    staticCodeAnalysis(sonarQubeCredentialsId)
-                }
+        stage('Static code analysis: Sonarqube'){
+            steps{
+               script{
+                   
+                   def SonarQubecredentialsId = 'sonar-token'
+                   statiCodeAnalysis(SonarQubecredentialsId)
+               }
             }
         }
-        stage('Quality Gate Status Check: SonarQube') {
-            steps {
-                script {
-                    def sonarQubeCredentialsId = 'sonar-token'
-                    qualityGateStatus(sonarQubeCredentialsId)
-                }
+        stage('Quality Gate Status Check : Sonarqube'){
+            steps{
+               script{
+                   
+                   def SonarQubecredentialsId = 'sonar-token'
+                   QualityGateStatus(SonarQubecredentialsId)
+               }
             }
         }
-        stage('Maven Build') {
-            steps {
-                script {
-                    mvnBuild()
-                }
+        stage('Maven Build : maven'){
+            steps{
+               script{
+                   
+                   mvnBuild()
+               }
             }
         }
-        stage('Building Docker Image') {
+        stage('Building image') {
             steps {
-                script {
-                    dockerImage = docker.build("${registry}/${imagename}:${tagname}")
-                }
+               script {
+                   dockerImage = docker.build("${registry}/${imagename}:${tagname}")
+             }
+          }
+       }
+       stage('Docker Image Scan: trivy') {
+           steps {
+              script {
+            // Define the Docker image to be scanned
+                  def imageName = "${registry}/${imagename}:${tagname}"
+            
+            // Execute Trivy scan on the Docker image
+                  sh "trivy image ${imageName}"
             }
-        }
-        stage('Docker Image Scan: Trivy') {
-            steps {
-                script {
-                    def imageName = "${registry}/${imagename}:${tagname}"
-                    sh "trivy image ${imageName}"
-                }
-            }
-        }
-        stage('Docker Image Cleanup: ECR') {
-            steps {
-                script {
-                    dockerImageCleanup("${registry}/${imagename}:${tagname}")
-                }
-            }
-        }
+          }
+       }
     }
 }
