@@ -82,6 +82,7 @@ pipeline {
                script {
                 def imageName = "${registry}"
                 sh "dockerImagePush(imageName)"
+               }
             }
         }
     }
